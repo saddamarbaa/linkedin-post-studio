@@ -36,10 +36,11 @@ export function CodeTemplate({ theme, content, author, hero }: CodeTemplateProps
           key={i}
           x="80"
           y={170 + i * 70}
-          fontSize="56"
-          fontWeight="800"
+          fontSize="60"
+          fontWeight="900"
           fill={theme.text}
           fontFamily={FONT_SANS}
+          letterSpacing="-1"
         >
           {line}
         </text>
@@ -71,57 +72,57 @@ export function CodeTemplate({ theme, content, author, hero }: CodeTemplateProps
         </g>
       )}
 
-      <g>
-        {/* macOS-style window frame (SPEC §8.4) */}
-        <rect
-          x={WINDOW.x}
-          y={WINDOW.y}
-          width={WINDOW.w}
-          height={WINDOW.h}
-          rx="20"
-          fill={theme.cardBg}
-          stroke={theme.text}
-          strokeOpacity="0.1"
-          strokeWidth="2"
-        />
-        <rect
-          x={WINDOW.x}
-          y={WINDOW.y}
-          width={WINDOW.w}
-          height={WINDOW.headerH}
-          rx="20"
-          fill={theme.text}
-          fillOpacity="0.05"
-        />
-        <circle cx={WINDOW.x + 35} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.red} />
-        <circle cx={WINDOW.x + 65} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.yellow} />
-        <circle cx={WINDOW.x + 95} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.green} />
+      {content.imageDataUrl ? (
+        <g>
+          <defs>
+            <clipPath id={clipId}>
+              <rect
+                x={WINDOW.x}
+                y={WINDOW.y}
+                width={WINDOW.w}
+                height={WINDOW.h}
+                rx="20"
+              />
+            </clipPath>
+          </defs>
+          <image
+            href={content.imageDataUrl}
+            x={WINDOW.x}
+            y={WINDOW.y}
+            width={WINDOW.w}
+            height={WINDOW.h}
+            preserveAspectRatio="xMidYMid meet"
+            clipPath={`url(#${clipId})`}
+          />
+        </g>
+      ) : (
+        <g>
+          {/* macOS-style window frame (SPEC §8.4) */}
+          <rect
+            x={WINDOW.x}
+            y={WINDOW.y}
+            width={WINDOW.w}
+            height={WINDOW.h}
+            rx="20"
+            fill={theme.cardBg}
+            stroke={theme.text}
+            strokeOpacity="0.1"
+            strokeWidth="2"
+          />
+          <rect
+            x={WINDOW.x}
+            y={WINDOW.y}
+            width={WINDOW.w}
+            height={WINDOW.headerH}
+            rx="20"
+            fill={theme.text}
+            fillOpacity="0.05"
+          />
+          <circle cx={WINDOW.x + 35} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.red} />
+          <circle cx={WINDOW.x + 65} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.yellow} />
+          <circle cx={WINDOW.x + 95} cy={WINDOW.y + 30} r="9" fill={TRAFFIC.green} />
 
-        {content.imageDataUrl ? (
-          <g>
-            <defs>
-              <clipPath id={clipId}>
-                <rect
-                  x={WINDOW.x + 20}
-                  y={WINDOW.y + WINDOW.headerH + 20}
-                  width={WINDOW.w - 40}
-                  height={WINDOW.h - WINDOW.headerH - 40}
-                  rx="8"
-                />
-              </clipPath>
-            </defs>
-            <image
-              href={content.imageDataUrl}
-              x={WINDOW.x + 20}
-              y={WINDOW.y + WINDOW.headerH + 20}
-              width={WINDOW.w - 40}
-              height={WINDOW.h - WINDOW.headerH - 40}
-              preserveAspectRatio="xMidYMid meet"
-              clipPath={`url(#${clipId})`}
-            />
-          </g>
-        ) : (
-          codeLines.map((line, i) => {
+          {codeLines.map((line, i) => {
             const trimmed = line.trim();
             const isComment =
               trimmed.startsWith('#') ||
@@ -140,9 +141,9 @@ export function CodeTemplate({ theme, content, author, hero }: CodeTemplateProps
                 {line || ' '}
               </text>
             );
-          })
-        )}
-      </g>
+          })}
+        </g>
+      )}
 
       <PostFooter theme={theme} author={author} />
     </svg>

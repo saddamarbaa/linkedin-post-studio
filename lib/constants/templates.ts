@@ -12,6 +12,7 @@ import {
   Megaphone,
   BookOpen,
   Layers,
+  Image as ImageIcon,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -135,6 +136,14 @@ export const TEMPLATES: Record<TemplateId, TemplateMeta> = {
     group: 'basic',
     description: 'Multi-slide swipe-through (cover, tips, CTA).',
     Icon: Layers,
+  },
+  fullImage: {
+    id: 'fullImage',
+    kind: 'fullImage',
+    name: 'Full Image',
+    group: 'basic',
+    description: 'Big image fills the upper container, branded footer below.',
+    Icon: ImageIcon,
   },
 };
 
