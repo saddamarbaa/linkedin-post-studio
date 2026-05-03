@@ -39,7 +39,8 @@ export type TemplateId =
   | 'tips'
   | 'announce'
   | 'explainer'
-  | 'carousel';
+  | 'carousel'
+  | 'fullImage';
 
 export type ThumbnailStyle = 'shock' | 'question' | 'stat' | 'reveal';
 
@@ -135,6 +136,14 @@ export type TemplateContent =
   | {
       kind: 'carousel';
       slides: CarouselSlide[];
+    }
+  | {
+      kind: 'fullImage';
+      caption: string;
+      imageDataUrl?: string;
+      imageWidth?: number;
+      imageHeight?: number;
+      imageFit?: 'fit' | 'fill';
     };
 
 export type TemplateKind = TemplateContent['kind'];

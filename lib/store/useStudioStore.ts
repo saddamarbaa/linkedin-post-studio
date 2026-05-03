@@ -150,6 +150,10 @@ while (line := f.readline()):
       },
     ],
   },
+  fullImage: {
+    kind: 'fullImage',
+    caption: '',
+  },
 };
 
 function summarizeContent(content?: TemplateContent): string {
@@ -187,6 +191,10 @@ function summarizeContent(content?: TemplateContent): string {
             : `${s.title}: ${s.subtitle}`,
         )
         .join('\n');
+    case 'fullImage':
+      return content.caption
+        ? `Full-image post — caption: ${content.caption}`
+        : 'Full-image post (image only, no caption)';
   }
 }
 

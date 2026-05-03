@@ -19,6 +19,7 @@ import { ConceptTemplate } from '@/components/templates/ConceptTemplate';
 import { DayLogTemplate } from '@/components/templates/DayLogTemplate';
 import { ExplainerTemplate } from '@/components/templates/ExplainerTemplate';
 import { FormulaTemplate } from '@/components/templates/FormulaTemplate';
+import { FullImageTemplate } from '@/components/templates/FullImageTemplate';
 import { QuoteTemplate } from '@/components/templates/QuoteTemplate';
 import { ThumbnailTemplate } from '@/components/templates/ThumbnailTemplate';
 import { TipsTemplate } from '@/components/templates/TipsTemplate';
@@ -277,5 +278,7 @@ function ActiveTemplate({
           slideIndex={slideIndex}
         />
       );
+    case 'fullImage':
+      return <FullImageTemplate theme={theme} content={content} author={author} />;
   }
 }

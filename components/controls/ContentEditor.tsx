@@ -81,6 +81,8 @@ function Editor({ content }: { content: TemplateContent }) {
       return <ExplainerEditor content={content} />;
     case 'carousel':
       return <CarouselEditor content={content} />;
+    case 'fullImage':
+      return <FullImageEditor content={content} />;
   }
 }
 
@@ -757,6 +759,168 @@ function CarouselEditor({
         </div>
       )}
     </>
+  );
+}
+
+// — fullImage —
+
+function readImageDimensions(
+  dataUrl: string,
+): Promise<{ width: number; height: number }> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () =>
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    img.onerror = () => resolve({ width: 0, height: 0 });
+    img.src = dataUrl;
+  });
+}
+
+function FullImageEditor({
+  content,
+}: {
+  content: Extract<TemplateContent, { kind: 'fullImage' }>;
+}) {
+  const patch = usePatch('fullImage');
+  const fit = content.imageFit ?? 'fit';
+  return (
+    <>
+      <FullImageBlock
+        value={content.imageDataUrl}
+        onChange={(imageDataUrl, imageWidth, imageHeight) =>
+          patch({ imageDataUrl, imageWidth, imageHeight })
+        }
+      />
+      {content.imageDataUrl && (
+        <div className="flex items-center justify-between gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg">
+          <div>
+            <Label className="text-xs font-bold text-slate-700">Image fit</Label>
+            <p className="text-[11px] text-slate-500 leading-snug">
+              {fit === 'fill'
+                ? 'Fills the area — wide images get cropped on the sides.'
+                : 'Shows the whole image — leaves space above/below if not square.'}
+            </p>
+          </div>
+          <div className="flex rounded-md overflow-hidden border border-slate-300">
+            <button
+              type="button"
+              onClick={() => patch({ imageFit: 'fit' })}
+              className={cn(
+                'px-3 py-1 text-xs font-semibold transition-colors',
+                fit === 'fit'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-700 hover:bg-slate-100',
+              )}
+            >
+              Fit
+            </button>
+            <button
+              type="button"
+              onClick={() => patch({ imageFit: 'fill' })}
+              className={cn(
+                'px-3 py-1 text-xs font-semibold transition-colors border-l border-slate-300',
+                fit === 'fill'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-white text-slate-700 hover:bg-slate-100',
+              )}
+            >
+              Fill
+            </button>
+          </div>
+        </div>
+      )}
+      <Field
+        id="fi-caption"
+        label={`Caption (optional, ${content.caption.length}/80)`}
+        value={content.caption}
+        onChange={(caption) => patch({ caption })}
+        maxLength={80}
+        placeholder="Optional one-liner under the image"
+      />
+    </>
+  );
+}
+
+function FullImageBlock({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange: (
+    dataUrl: string | undefined,
+    width?: number,
+    height?: number,
+  ) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = async (file: File) => {
+    const result = await validateAndConvertToBase64(file);
+    if (!result.ok) {
+      toast.error(result.error);
+      return;
+    }
+    const { width, height } = await readImageDimensions(result.dataUrl);
+    onChange(result.dataUrl, width, height);
+  };
+
+  return (
+    <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <Label className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
+          <ImageIcon className="size-3.5" />
+          Full Image
+        </Label>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange(undefined)}
+            className="text-xs text-red-500 hover:text-red-700 flex items-center gap-1 font-semibold"
+          >
+            <X className="size-3" /> Remove
+          </button>
+        )}
+      </div>
+      <p className="text-[11px] text-purple-800 leading-snug">
+        Fills the upper container — screenshots, charts, photos. Aspect ratio is preserved.
+      </p>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) void handleFile(f);
+          e.target.value = '';
+        }}
+      />
+      {!value ? (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white hover:bg-purple-100 border border-purple-300 rounded-lg text-xs font-semibold text-purple-900 transition-all"
+        >
+          <Upload className="size-3.5" /> Upload image
+        </button>
+      ) : (
+        <div className="relative rounded-lg overflow-hidden border-2 border-purple-300 bg-slate-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={value}
+            alt="Full image preview"
+            className="w-full max-h-48 object-contain mx-auto"
+          />
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="absolute bottom-1 right-1 px-2 py-0.5 bg-white/95 rounded text-[10px] font-semibold shadow"
+          >
+            Change
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
