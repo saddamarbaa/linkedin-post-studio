@@ -1,0 +1,81 @@
+import type { Theme, ThemeId } from '@/types/studio';
+
+// bgGradient + accent values are pinned to SPEC §4.1.
+// text/muted/accent2/cardBg/swatch/isDark are derived from Old-code.ts and
+// adjusted to read against the SPEC bgGradient.
+export const THEMES: Record<ThemeId, Theme> = {
+  terminal: {
+    id: 'terminal',
+    name: 'Terminal',
+    swatch: '#00ff88',
+    bgGradient: ['#0a0e1a', '#0f1729'],
+    text: '#ffffff',
+    muted: '#94a3b8',
+    accent: '#00ff88',
+    accent2: '#00d4ff',
+    cardBg: 'rgba(0,0,0,0.4)',
+    isDark: true,
+  },
+  cosmic: {
+    id: 'cosmic',
+    name: 'Cosmic',
+    swatch: '#f093fb',
+    bgGradient: ['#667eea', '#764ba2', '#f093fb'],
+    text: '#ffffff',
+    muted: '#e9d5ff',
+    accent: '#ffffff',
+    accent2: '#ff79c6',
+    cardBg: 'rgba(0,0,0,0.25)',
+    isDark: true,
+  },
+  ocean: {
+    id: 'ocean',
+    name: 'Ocean',
+    swatch: '#0ea5e9',
+    bgGradient: ['#0c4a6e', '#0369a1', '#0ea5e9'],
+    text: '#ffffff',
+    muted: '#cbd5e1',
+    accent: '#7dd3fc',
+    accent2: '#a78bfa',
+    cardBg: 'rgba(0,0,0,0.3)',
+    isDark: true,
+  },
+  sunset: {
+    id: 'sunset',
+    name: 'Sunset',
+    swatch: '#f97316',
+    bgGradient: ['#7c2d12', '#dc2626', '#f97316'],
+    text: '#ffffff',
+    muted: '#ffe5e0',
+    accent: '#fef3c7',
+    accent2: '#ffffff',
+    cardBg: 'rgba(0,0,0,0.25)',
+    isDark: true,
+  },
+  minimal: {
+    id: 'minimal',
+    name: 'Minimal',
+    swatch: '#0f172a',
+    bgGradient: ['#ffffff', '#f8fafc'],
+    text: '#0a0a0a',
+    muted: '#737373',
+    accent: '#0f172a',
+    accent2: '#ef4444',
+    cardBg: 'rgba(0,0,0,0.04)',
+    isDark: false,
+  },
+  paper: {
+    id: 'paper',
+    name: 'Paper',
+    swatch: '#713f12',
+    bgGradient: ['#fef9c3', '#fef08a'],
+    text: '#1c1917',
+    muted: '#78716c',
+    accent: '#713f12',
+    accent2: '#0369a1',
+    cardBg: 'rgba(0,0,0,0.03)',
+    isDark: false,
+  },
+};
+
+export const THEME_LIST: Theme[] = Object.values(THEMES);
