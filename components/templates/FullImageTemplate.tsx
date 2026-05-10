@@ -23,6 +23,9 @@ export function FullImageTemplate({ theme, content, author }: FullImageTemplateP
   const imgH = hasCaption ? IMAGE_H_WITH_CAPTION : IMAGE_H_NO_CAPTION;
   const captionY = IMAGE_Y + imgH + 40;
   const clipId = `full-img-clip-${theme.id}`;
+  const fit = content.imageFit ?? 'fit';
+  const preserveAspectRatio =
+    fit === 'fill' ? 'xMidYMid slice' : 'xMidYMid meet';
 
   return (
     <svg viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" width="100%">
@@ -41,7 +44,7 @@ export function FullImageTemplate({ theme, content, author }: FullImageTemplateP
           y={IMAGE_Y}
           width={IMAGE_W}
           height={imgH}
-          preserveAspectRatio="xMidYMid slice"
+          preserveAspectRatio={preserveAspectRatio}
           clipPath={`url(#${clipId})`}
         />
       ) : (
