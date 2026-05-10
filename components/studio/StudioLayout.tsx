@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { AlertTriangle, ChevronLeft, ChevronRight, Sparkles, Square } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Square } from 'lucide-react';
 
 import { CaptionGenerator } from '@/components/ai/CaptionGenerator';
 import { ContentEditor } from '@/components/controls/ContentEditor';
@@ -10,7 +10,8 @@ import { ImageUploader } from '@/components/controls/ImageUploader';
 import { TemplatePicker } from '@/components/controls/TemplatePicker';
 import { ThemePicker } from '@/components/controls/ThemePicker';
 import { YourInfo } from '@/components/controls/YourInfo';
-import { DownloadButton } from '@/components/studio/DownloadButton';
+import { StudioHeader } from '@/components/studio/StudioHeader';
+import { StudioHero } from '@/components/studio/StudioHero';
 import { AnnounceTemplate } from '@/components/templates/AnnounceTemplate';
 import { CarouselTemplate } from '@/components/templates/CarouselTemplate';
 import { CodeTemplate } from '@/components/templates/CodeTemplate';
@@ -75,33 +76,16 @@ function StudioInner() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <StudioHeader
+        containerRef={containerRef}
+        carouselSlides={isCarousel ? carouselLen : 0}
+        onSlideChange={setSlideIndex}
+      />
+      <StudioHero />
       <div className="mx-auto max-w-3xl px-4 md:px-6 py-6 space-y-5">
-        <Card className="p-5">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="size-12 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <Sparkles className="size-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-black text-slate-900 tracking-tight">
-                  Post Studio
-                </h1>
-                <p className="text-xs text-slate-500">
-                  Beautiful ML/AI graphics for LinkedIn creators
-                </p>
-              </div>
-            </div>
-            <DownloadButton
-              containerRef={containerRef}
-              carouselSlides={isCarousel ? carouselLen : 0}
-              onSlideChange={setSlideIndex}
-              variant="header"
-            />
-          </div>
-          <AiBanner />
-        </Card>
-
-        <TemplatePicker />
+        <div id="templates" className="scroll-mt-20">
+          <TemplatePicker />
+        </div>
         <ThemePicker />
         <ContentEditor />
         <ImageUploader />
@@ -166,23 +150,6 @@ function StudioInner() {
 
         {aiEnabled && <CaptionGenerator />}
       </div>
-    </div>
-  );
-}
-
-function AiBanner() {
-  const enabled = useAiEnabled();
-  if (enabled) return null;
-  return (
-    <div className="mt-3 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-900">
-      <AlertTriangle className="size-3.5" />
-      <span>
-        AI off — add{' '}
-        <code className="font-mono text-[11px] bg-amber-100 px-1 rounded">
-          ANTHROPIC_API_KEY
-        </code>{' '}
-        to <code className="font-mono text-[11px]">.env.local</code>.
-      </span>
     </div>
   );
 }

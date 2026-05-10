@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
+import { StudioFooter } from '@/components/studio/StudioFooter';
 import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'LinkedIn Post Studio',
+  title: 'Post Studio — Beautiful LinkedIn graphics in 60 seconds',
   description:
-    'Generate scroll-stopping 1200×1200 LinkedIn graphics for AI/ML/coding creators.',
+    'Pick a template, edit the text, export a 1200×1200 PNG. Built for AI, ML, and coding creators. Optional AI for thumbnails and captions.',
 };
 
 export default function RootLayout({
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children}
+        <StudioFooter />
         <Toaster richColors position="top-right" />
       </body>
     </html>
