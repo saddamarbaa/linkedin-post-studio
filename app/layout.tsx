@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'LinkedIn Post Studio',
+  title: 'Post Studio — Beautiful LinkedIn graphics in 60 seconds',
   description:
-    'Generate scroll-stopping 1200×1200 LinkedIn graphics for AI/ML/coding creators.',
+    'Pick a template, edit the text, export a 1200×1200 PNG. Built for AI, ML, and coding creators. Optional AI for thumbnails and captions.',
 };
 
 export default function RootLayout({
